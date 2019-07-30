@@ -1,0 +1,17 @@
+body {
+    background-color: lightslategrey;
+    color: white;
+}
+
+p {
+    float:right;
+}
+
+button {
+  background-color:
+  color: white;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+}

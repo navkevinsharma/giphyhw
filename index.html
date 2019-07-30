@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Giphy</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body onload="printButton();">
+
+    <p><label for="search_term">Search for a Topic</label><br>
+        <input type="text" id="search_term"><br>
+        <button onclick= "myFunction()" id="submit" type="submit">Submit</button>
+    </p>
+
+    
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+ <script type="text/javascript">
+
+    var u = 'https://api.giphy.com/v1/gifs/search?q='+searchVal+'&api_key=xRmb5iMuYtnEDwHrskX0j6QKfTGhqJ4&limit='+maxResult;
+
+    $.ajax({
+    url: u,
+    method: "GET"
+    }).then(function(response) {
+    console.log(response);
+    })
+
+    var topics = ["football", "basketball", "history", "travel", "technology", "food"]
+
+    function printButton() {
+        for (var i = 0; i < topics.length; i++) {
+            var button = document.createElement("button");
+            var t = document.createTextNode(topics[i]);
+            button.appendChild(t);
+            document.body.appendChild(button);
+        }
+    }
+
+  
+</script>
+    
+</body>
+</html>
