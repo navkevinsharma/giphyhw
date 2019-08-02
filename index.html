@@ -6,39 +6,93 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Giphy</title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
-<body onload="printButton();">
 
-    <p><label for="search_term">Search for a Topic</label><br>
-        <input type="text" id="search_term"><br>
-        <button onclick= "myFunction()" id="submit" type="submit">Submit</button>
-    </p>
+<body>
+
+        <p><label for="search_term">Search for a Topic</label><br>
+            <input type="text" id="search_term"><br>
+            <button id="submit">Submit</button>
+        </p>
+    <div id="gifButtons"></div>
+    <div id="images"></div>
+   
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
     
-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
  <script type="text/javascript">
 
-    var u = 'https://api.giphy.com/v1/gifs/search?q='+searchVal+'&api_key=xRmb5iMuYtnEDwHrskX0j6QKfTGhqJ4&limit='+maxResult;
+    var searchVal = "football";
+    var maxResult = 10;
+    
+    var u = 'https://api.giphy.com/v1/gifs/search?q='+searchVal+'&api_key=5y9fYT59mMwPdd1MzZO1J0XNKNZy3H4c&limit='+maxResult;
 
     $.ajax({
-    url: u,
-    method: "GET"
+        url: u,
+        method: "GET"
     }).then(function(response) {
-    console.log(response);
+        console.log(response);
     })
 
-    var topics = ["football", "basketball", "history", "travel", "technology", "food"]
+    var topics = ["football", "basketball", "history", "travel", "technology", "food"];
 
-    function printButton() {
+
+    function gifButtons() {
+        $("#gifButtons").empty();
         for (var i = 0; i < topics.length; i++) {
-            var button = document.createElement("button");
-            var t = document.createTextNode(topics[i]);
-            button.appendChild(t);
-            document.body.appendChild(button);
+            
+            var a = $("<button>");
+            
+            a.attr("type","button");
+    // Adding a data-attribute with a value of the movie at index i
+            a.attr("data-name", topics[i]);
+    // Providing the button's text with a value of the movie at index i
+            a.text(topics[i]);
+    // Adding the button to the HTML
+            $("#gifButtons").append(a)
+
+    }}
+
+       gifButtons();
+
+    $(document).on('click',"button", function(){
+        var buttonVal = $(this).text();
+        $("#images").empty();
+        if (buttonVal == "Submit"){
+            buttonVal = $("#search_term").val();
+            topics.push(buttonVal);
+            console.log(topics);
+            gifButtons();
         }
-    }
+        // var searchVal = buttonVal;
+        var q = 'https://api.giphy.com/v1/gifs/search?q='+buttonVal+'&api_key=5y9fYT59mMwPdd1MzZO1J0XNKNZy3H4c&limit='+maxResult;
+        $.ajax({
+            url:q,
+            method:"GET"
+        }).then(function(response){
+            console.log('test'+response);
+            for (var i=0; i<21; i++){
+                var stilURL = response.data[i].images.downsized_still.url;
+                var activeURL = response.data[i].images.downsized.url;
+                var imgTag = $('<img>').attr('src',activeURL);
+                $("#images").append(imgTag);
+            }
+            // debugger;
+            // var stilURL = response.data[i].images.downsized_still.url;
+            // var imgTag = $('<img>').attr('src',stilURL);
+            // $("div").append(imgTag);
+        })
+
+       
+
+    })
+    
 
   
 </script>
